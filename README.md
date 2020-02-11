@@ -14,6 +14,7 @@ Al marcar gol la pelota se movera hacia el jugador que haya marcado gol con un Ã
 Utilice las librerias de Sound para producir los sonidos por lo que habra que tener instalada esta liberia para que funcione. Ademas debera estar la carpeta de data dentro del proyecto para que funcione correctamente.
 
 ### Resultado.
-![](animation.gif)
+
+![](https://github.com/irunervey/Pong/blob/master/animation.gif)
 
 Por Iru Nervey Navarro Alejo.
