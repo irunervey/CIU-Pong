@@ -1,4 +1,5 @@
 import processing.sound.*;
+//import gifAnimation.*;
 int px,py;
 int vx,vy;
 int jx,jy;
@@ -12,13 +13,15 @@ boolean inicio;
 SoundFile sonidoCol;
 SoundFile sonidoGol;
 SoundFile sonidoGan;
+//GifMaker ficherogif;
 
 void setup(){
+  
   size(800,800);
   fill(128);
   noStroke();
   vx=5-int(random(0,2))*10;;
-  inicio=false;
+  inicio=true;
   restart();
   jx=(int)(width*0.9);
   jy=height/2;
@@ -28,6 +31,12 @@ void setup(){
   sonidoCol=new SoundFile(this,"Col.wav");
   sonidoGol=new SoundFile(this,"Gol.wav");
   sonidoGan=new SoundFile(this,"Gan.wav");
+  sonidoCol.amp(0.1);
+  sonidoGol.amp(0.1);
+  sonidoGan.amp(0.1);
+  /*ficherogif = new GifMaker(this, "animation.gift");    //Descomentar todo lo comentado para grabar un gif
+  ficherogif.setRepeat(0);*/
+   
 }
 
 
@@ -51,7 +60,12 @@ void draw(){
       fin();
     }
   }
+  //ficherogif.addFrame();
 }
+
+/*void mousePressed(){
+  ficherogif.finish();
+}*/
 
 void gol(){
   if(px>width || px<0){
@@ -69,7 +83,7 @@ void gol(){
       restart();
     }
 }
-
+//Se comprueba si la pelota ha colisionado con un jugador
 void comprobarColision(){
   if(px > jx2 && px < jx2+10 && (py)<(jy2+80) && (py)>(jy2-20)){
        colision(jy2);
@@ -92,7 +106,7 @@ void crearJugador(int posx, int posy,int color1,int color2,int color3){
   stroke(color1,color2,color3);
   rect(posx,posy,10,60);
 }
-
+//Se ha producido una colision con el jugador y se procede a darle una nueva velocidad
 void colision(int pos){
   vx=-vx;
   int variacion=py-(pos+30);
@@ -122,10 +136,13 @@ void keyPressed(){
   } if(key == 's'|| key == 'S'){
     movimiento1=2;
   }if (key == ENTER){
-    if(finalizado!=0){
+    if(inicio){
+      inicio=false;
+    } else if(finalizado!=0){
       finalizado=0;
       nuevo();
-    } 
+      inicio=true;
+    }
   } 
 }
 
@@ -143,7 +160,8 @@ void keyReleased(){
     movimiento1=0;
   }
 }
-
+//Se llama despues de haber marcado un gol para restablecer la pelota
+//en el centro y darle velocidad
 void restart(){
   vy=int(random(-7,7));
   vx=-vx;
@@ -157,7 +175,7 @@ void imprimirMarcador(){
   text(marcador[0],width/2-50,height/5);
   text(marcador[1],width/2+50,height/5);
 }
-
+//Ventana de fin de partida con el ganador
 void fin(){
   vx=0;
   vy=0;
@@ -170,7 +188,8 @@ void fin(){
   text("Pulsa enter para jugar de nuevo",width/4,height*2/3);
   finalizado=1;
 }
-
+//Metodo que modifica la velocidad de la pelota produciendo un nuevo 
+//angulo y cambiando la direccion
 void movimiento(){
   if(movimiento2!=0){
     if(movimiento2==1){
@@ -195,7 +214,7 @@ void movimiento(){
     }
   }
 }
-
+//Metodos para producir los sonidos
 void suena1(){
   sonidoCol.play();
 }
@@ -205,13 +224,22 @@ void suena2(){
 void suena3(){
   sonidoGan.play();
 }
-
+//Se inicializa el marcador y se le asigna una velocidad inicial
 void nuevo(){
   vx=5-int(random(0,2))*10;
   marcador[0]=0;
   marcador[1]=0;
 }
+//Ventana inicial
 void iniciar(){
-  text("Diferencia de:",diferencia,width/3,height/2);
+  textSize(30);
+
+  String mensaje="Diferencia de: "+diferencia;
+  fill(255,255,255);
   
+  text(mensaje,width/3,height/2);
+  text("Pulsa derecha o izquierda \npara modificar la diferencia",width/4,height*2/3);
+  fill(144,0,0);
+  text("Pulsa enter para jugar",width/3,height/3);
+    
 }
